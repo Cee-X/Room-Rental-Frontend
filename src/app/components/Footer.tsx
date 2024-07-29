@@ -2,8 +2,8 @@ import Image from "next/image"
 import { Button } from "../utils/Button"
 const Footer = () => {
   return (
-    <div className="flex justify-center items-center gap-10 p-10">
-      <div className="sm:flex-shrink-0">
+    <div className="flex flex-row justify-center items-center gap-10 p-10">
+      <div className="hidden sm:block">
         <Image src='/newletter.png' width={220} height={215} alt="new letter" />
       </div>
       <div className="space-y-6">

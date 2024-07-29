@@ -22,20 +22,17 @@ const TopOffers = () => {
   return (
     <div>
       <div className="flex justify-between">
-        <div className=" flex-grow-0">
+        <div className="flex-grow-0">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Top Offers</h1>
             <p className="text-sm  md:text-xl  font-light">Prime rooms near the university, tailored for students seeking convenience and comfort.</p>
         </div>
-        <div className="flex-shrink-0">
-            <Button className="">View All Offers</Button>
-        </div>
       </div>
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
         {offers? offers.map((offer: RoomProps) => (
-          <Link href={`/room/${offer._id}`} key={offer._id}>
-            <Card key={offer._id} className="w-full">
+          <Link href={`/room/${offer._id}`} key={offer._id} className="w-full">
+            <Card key={offer._id} className="w-full ">
                 <div className="w-full h-56 relative">
-                  <Image src={offer.images} alt="room" layout="fill" objectFit="cover"/>
+                  <Image src={offer.images} alt="room" fill style={{objectFit: 'cover'}} sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                 </div>
                 <CardTitle>{offer.title}</CardTitle>
                 <CardDescription>{offer.description}</CardDescription>
