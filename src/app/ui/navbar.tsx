@@ -61,13 +61,8 @@ const NavBar = () => {
                         {userRole === 'admin' && (
                             <>
                                 <DropdownMenuItem>
-                                    <Link href="/admin/create-room" className="block px-4 py-2 text-sm text-gray-700">
-                                        Create Room
-                                    </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Link href="/admin/manage-bookings" className="block px-4 py-2 text-sm text-gray-700">
-                                        Manage Bookings
+                                    <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700">
+                                        Dashboard
                                     </Link>
                                 </DropdownMenuItem>
                             </>

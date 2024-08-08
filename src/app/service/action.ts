@@ -1,6 +1,7 @@
 
 
 import request from './request'
+import Dashboard from '../components/dashboard/DataCard';
 
 export interface RoomTopProps {
     _id: string;
@@ -224,3 +225,28 @@ export const updateProfile = async (data:FormData) => {
 }
 
 
+export interface MonthlyData {
+  month: string;
+  totalRevenue: number;
+  totalBookings: number;
+}
+
+export interface DashboardDataProps {
+  totalRooms: number;
+  totalBookings: number;
+  totalUsers: number;
+  totalRevenue: number;
+  currentBookings: number;
+  revenueIncreaseRate: number;
+  bookingIncreaseRate: number;
+  monthlyData: MonthlyData[];
+}
+
+export const getDashboardData = async () => {
+    try{
+        const response = await request.get('/dashboard');
+        return response.data;
+    }catch(error){
+        throw error;
+    }
+}

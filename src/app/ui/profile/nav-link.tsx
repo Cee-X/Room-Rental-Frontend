@@ -1,23 +1,19 @@
 'use client';
-import {
-  TicketIcon,
-  UserIcon,
-  StarIcon
-} from '@heroicons/react/24/outline';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
-const links = [
-  { name: 'profile', href: '/profile', icon: UserIcon },
-  {
-    name: 'booking', href: '/profile/bookings',icon: TicketIcon,
-  },
-  { name: 'Reviews', href: '/profile/reviews', icon: StarIcon  },
-];
+interface NavLinkProps {
+  links: {
+    name: string;
+    href: string;
+    icon: React.ComponentType<{className?: string}>;
+  }[];
+}
 
-export default function NavLinks() {
+export default function NavLinks({links}: NavLinkProps) {
   const pathname = usePathname();
   return (
     <>
