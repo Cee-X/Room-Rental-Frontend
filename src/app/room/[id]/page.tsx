@@ -43,7 +43,6 @@ const Page = ({params}: {params: {id: string}}) => {
         e.preventDefault();
         try{
             const response = await createBooking(bookingData);
-            console.log(response);
             setSuccessMessage(response.message);
 
         }catch(error){

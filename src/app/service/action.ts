@@ -1,11 +1,11 @@
 
 
 import request from './request'
-import Dashboard from '../components/dashboard/DataCard';
-
+import { redirect } from 'next/navigation';
 export interface RoomTopProps {
     _id: string;
     title: string;
+    roomNumber: number;
     description: string;
     price: number;
     location: string;
@@ -15,10 +15,12 @@ export interface RoomTopProps {
     rating: number;
     pets: boolean;
     capacity: number;
+    
 }
 export interface RoomProps {
     _id: string;
     title: string;
+    roomNumber: number;
     description: string;
     price: number;
     location: string;
@@ -61,6 +63,22 @@ export const getRoomById = async (id: string) => {
     }
 }
 
+export type CreateRoomProps = {
+    title: string;
+    roomNumber: string;
+    description: string;
+    price: string;
+    capacity: string;
+    size: string;
+    pets: boolean;
+    location: string;
+    images: File[];
+    amenities: string[];
+    rating: string;
+    isTopOffer: boolean;
+    status: 'available' | 'booked';
+};
+
 export const createRoom = async (data: FormData) => {
     try{
         const response = await request.post('/room', data);
@@ -68,6 +86,23 @@ export const createRoom = async (data: FormData) => {
     }catch(error){
         throw error;
     }
+    
+}
+export interface EditRoomProps {
+    _id: string;
+    title: string;
+    roomNumber: string;
+    description: string;
+    price: string;
+    capacity: string;
+    size: string;
+    pets: boolean;
+    location: string;
+    images: File[];
+    amenities: string[];
+    rating: string;
+    isTopOffer: boolean;
+    status: 'available' | 'booked';
 }
 
 export const updateRoom = async (id: string, data: FormData) => {
@@ -245,6 +280,47 @@ export interface DashboardDataProps {
 export const getDashboardData = async () => {
     try{
         const response = await request.get('/dashboard');
+        return response.data;
+    }catch(error){
+        throw error;
+    }
+}
+
+
+export type RoomTableProps = {
+    _id: string;
+    title: string;
+    roomNumber: number;
+    description : string;
+    price : number;
+    capacity : number;
+    size : number;
+    pets : boolean;
+    location : string;
+    images : string[];
+    amenities : string[];
+    rating : number;
+    isTopOffer : boolean;
+    status : 'available' | 'booked';
+    startDate : string;
+    date : string;
+    
+  };
+
+export const fetchFilteredRooms  = async (query: string, currentPage: number) => {
+    try{
+        const response = await request.get(`/dashboard/rooms?query=${query}&page=${currentPage}`);
+        return response.data;
+      
+    }catch(error){
+        throw error;
+    }
+}
+
+export const fetchRoomPage = async ( query : string) => {
+    try{
+        const response = await request.get(`/dashboard/rooms/pages?query=${query}`);
+        console.log(response.data);
         return response.data;
     }catch(error){
         throw error;
