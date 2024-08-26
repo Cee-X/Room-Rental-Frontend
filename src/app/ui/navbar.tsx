@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { DropdownMenu,DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "../utils/DropDownMenu";
 import { UserIcon } from '@heroicons/react/16/solid';
 import { useAuth } from '../auth/AuthProvider';
+import { lusitana } from './font';
+
 const NavBar = () => {
-  
-  console.log();
   const router = useRouter();
   const { logout, userRole} = useAuth();
 
@@ -21,7 +21,7 @@ const NavBar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex">
-              <Link href="/" className="text-xl font-bold  inline-flex items-center">
+              <Link href="/" className={`${lusitana.className} text-xl font-bold  inline-flex items-center`}>
                 Room Rental
               </Link>
             </div>
@@ -29,10 +29,7 @@ const NavBar = () => {
               <Link href="/" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
                 Home
               </Link>
-              <Link href="/search" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
-                Search
-              </Link>
-              <Link href="/rooms" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
+              <Link href="/room" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
                 Rooms
               </Link>
               <Link href="/contact" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
@@ -42,7 +39,7 @@ const NavBar = () => {
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {userRole ? (
-              <div className="ml-3 relative">
+              <div className="ml-3 relative ">
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div
@@ -52,7 +49,7 @@ const NavBar = () => {
                             <UserIcon className="h-8 w-8 rounded-full" />
                         </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent  className="min-w-[160px]  bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade">
+                    <DropdownMenuContent  className="min-w-[160px] z-50  bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade">
                         <DropdownMenuItem>
                             <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700">
                                 Profile

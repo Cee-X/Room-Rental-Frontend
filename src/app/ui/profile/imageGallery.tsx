@@ -10,12 +10,12 @@ import {
 import Image from "next/image"
 
 export const ImageGallery = ({ images }: { images: string[] }) => {
-    
+   
     return (
         <Carousel>
             <CarouselContent>
                 {images.map((image, index) => (
-                    <CarouselItem key={index} className="w-full h-56 relative">
+                    <CarouselItem key={index} className="w-full h-40 relative">
                         <Image src={image} alt="room" layout="fill" objectFit="cover"/>
                     </CarouselItem>
                 ))}

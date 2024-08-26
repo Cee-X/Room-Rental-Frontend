@@ -1,5 +1,11 @@
 import SideNav from "../ui/profile/sidenav";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "Profile - Rent rooms easily",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">

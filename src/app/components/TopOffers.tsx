@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react'
 import Image from "next/image"
 import { getTopOfferRooms, RoomProps } from "../service/action"
 import Link from "next/link"
+import { ImageGallery } from "../ui/profile/imageGallery"
 const TopOffers = () => {
-  const [offers, setOffers] = useState([]) // [1,2,3,4,5,6,7,8,9,10]
+  const [rooms, setRooms] = useState([]) // [1,2,3,4,5,6,7,8,9,10]
   const fetchTopOffers = async () => {
     try{
         const response = await getTopOfferRooms()
-        setOffers(response)
+        setRooms(response)
     }catch(error){  
         console.log(error)
     }
@@ -20,29 +21,27 @@ const TopOffers = () => {
   }, [])
 
   return (
-    <div>
-      <div className="flex justify-between">
-        <div className="flex-grow-0">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Top Offers</h1>
-            <p className="text-sm  md:text-xl  font-light">Prime rooms near the university, tailored for students seeking convenience and comfort.</p>
+    <div className="p-6 md:p-16 ">
+        <h2 className="text-3xl font-bold text-gray-900">Top Offers</h2>
+        <p className="mt-2 text-lg text-gray-600">Prime rooms near the university, tailored for students seeking convenience and comfort.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6 mt-10">
+          {rooms? rooms.map((room: RoomProps) => (
+              <Card key={room._id} className='w-full max-w-sm bg-[#E3F2FD] rounded-lg shadow-lg hover:shadow-xl hover:bg-[#BBDEFB] transition-all duration-200'>
+                  <div className='w-full'>
+                    <ImageGallery images={room.images} />
+                  </div>
+                  <CardTitle className="mt-4">{room.title}</CardTitle>
+                  <CardPrice >${room.price}</CardPrice>
+                  <CardLocation>{room.location}</CardLocation>
+                  <div className='px-3 mb-3'>
+                    <Button className="bg-orange-500 hover:bg-orange-600">
+                      <Link href={`/room/${room._id}`}>View</Link>
+                    </Button>
+                  </div>
+          </Card>
+          ))
+          : <p>Loading....</p>}
         </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
-        {offers? offers.map((offer: RoomProps) => (
-          <Link href={`/room/${offer._id}`} key={offer._id} className="w-full">
-            <Card key={offer._id} className="w-full ">
-                <div className="w-full h-56 relative">
-                  <Image src={offer.images} alt="room" fill style={{objectFit: 'cover'}} sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw" />
-                </div>
-                <CardTitle>{offer.title}</CardTitle>
-                <CardDescription>{offer.description}</CardDescription>
-                <CardPrice>${offer.price} / month</CardPrice>
-                <CardLocation>{offer.location}</CardLocation>
-            </Card>
-          </Link>
-        ))
-        : <p>Loading....</p>}
-      </div>
     </div>
   )
 }

@@ -1,53 +1,36 @@
 
-
 import request from './request'
 import { redirect } from 'next/navigation';
 export interface RoomTopProps {
     _id: string;
     title: string;
-    roomNumber: number;
+    roomType: string;
+    roomNumber: string;
     description: string;
     price: number;
     location: string;
+    address: string;
     images: string[];
     size: number;
     amenities: string[];
     rating: number;
     pets: boolean;
     capacity: number;
-    
 }
 export interface RoomProps {
     _id: string;
     title: string;
-    roomNumber: number;
+    roomNumber: string;
     description: string;
     price: number;
     location: string;
-    images: string;
+    images: string[];
 }
 
 export const getTopOfferRooms = async () => {
     try{
         const response = await request.get('/room/topOffers');
-        return response.data.map((room: RoomTopProps) => ({
-            ...room,
-            images: room.images[0]? room.images[0] : []
-        })
-        );
-    }catch(error){
-        throw error;
-    }
-}
-
-export const getSearchRooms = async (params: URLSearchParams) => {
-    try{
-        const response = await request.get(`/room/search?${params.toString()}`);
-        return response.data.map((room: RoomTopProps) => ({
-            ...room,
-            images: room.images[0]? room.images[0] : []
-        })
-        );
+        return response.data;
     }catch(error){
         throw error;
     }
@@ -65,6 +48,7 @@ export const getRoomById = async (id: string) => {
 
 export type CreateRoomProps = {
     title: string;
+    roomType: string;
     roomNumber: string;
     description: string;
     price: string;
@@ -72,6 +56,7 @@ export type CreateRoomProps = {
     size: string;
     pets: boolean;
     location: string;
+    address: string;
     images: File[];
     amenities: string[];
     rating: string;
@@ -91,6 +76,7 @@ export const createRoom = async (data: FormData) => {
 export interface EditRoomProps {
     _id: string;
     title: string;
+    roomType: string;
     roomNumber: string;
     description: string;
     price: string;
@@ -98,6 +84,7 @@ export interface EditRoomProps {
     size: string;
     pets: boolean;
     location: string;
+    address: string;
     images: File[];
     amenities: string[];
     rating: string;
@@ -127,6 +114,7 @@ export const deleteRoom = async (id: string) => {
 export interface Room {
     _id: string;
     title: string;
+    roomNumber: string;
     description: string;
     price: number;
     capacity: number;
@@ -321,6 +309,24 @@ export const fetchRoomPage = async ( query : string) => {
     try{
         const response = await request.get(`/dashboard/rooms/pages?query=${query}`);
         console.log(response.data);
+        return response.data;
+    }catch(error){
+        throw error;
+    }
+}
+
+export const getRooms = async (query: string, currentPage: number) => {
+    try{
+        const response = await request.get(`/room?${query}&page=${currentPage}`);
+        return response.data;
+    }catch(error){
+        throw error;
+    }
+}
+
+export const sendEmail = async (data: FormData) => {
+    try{
+        const response = await request.post('/email', data);
         return response.data;
     }catch(error){
         throw error;

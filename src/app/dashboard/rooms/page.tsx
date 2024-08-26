@@ -8,7 +8,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { fetchRoomPage } from '../../service/action';
 export const metadata : Metadata = {
-  title : 'Rooms'
+  title : 'Rooms - Dashboard',
 }
 export default async function Page({searchParams}: {
   searchParams? :{

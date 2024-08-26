@@ -3,7 +3,7 @@ import { DashboardCard } from "@/app/ui/dashboard/card";
 
 import { getDashboardData, DashboardDataProps } from '@/app/service/action';
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { UserGroupIcon, CurrencyDollarIcon,InboxIcon, HomeIcon } from "@heroicons/react/24/outline";
 import {

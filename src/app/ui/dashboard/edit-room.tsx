@@ -1,25 +1,30 @@
 'use client'
 import { EditRoomProps, updateRoom } from '@/app/service/action'
 import React,{useState} from 'react'
-
+import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 const EditRoom = ({room}: {room: EditRoomProps}) => {
   const [formData, setFormData] = useState<EditRoomProps>({
     _id: room._id,
     title: room.title,
     roomNumber: room.roomNumber,
+    roomType: room.roomType,
     description: room.description,
     price: room.price,
     capacity: room.capacity,
     size: room.size,
     pets: room.pets,
     location: room.location,
+    address: room.address,
     images: room.images,
     amenities: room.amenities,
     rating: room.rating,
     isTopOffer: room.isTopOffer,
     status: room.status
   });
-
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const handleChange = (e: React.ChangeEvent) => {
     const {name, value, type, checked} = e.target as HTMLInputElement;
     setFormData((prev) => ({
@@ -54,9 +59,18 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
     try{
         const response = await updateRoom(formData._id, data);
-        console.log(response);
+        setSuccessMessage(response.message);
     }catch(error){
-        console.error(error);
+        if (typeof error === 'object' && error !== null && 'response' in error) {
+            const axiosError = error as { response: { data: { message: string } } };
+            if (axiosError.response && axiosError.response.data && axiosError.response.data.message) {
+              setErrorMessage(axiosError.response.data.message);
+            } else {
+              setErrorMessage("An unexpected error occurred");
+            }
+          } else {
+            setErrorMessage("An unexpected error occurred");
+          }
     }
  }
   return (
@@ -157,16 +171,30 @@ const handleSubmit = async (e: React.FormEvent) => {
                 />
             </div>
         </div>
-
         <div className='mb-4'>
-            <label htmlFor="location" className='mb-2 block text-sm font-medium'>Location</label>
+            <label htmlFor='address' className='mb-2 block text-sm font-medium'>Full Address</label>
+            <div className='mt-2 rounded-md'>
+                <input
+                type="text"
+                id="address"
+                name="address"
+                required
+                placeholder='Enter Full Address'
+                value={formData.address}
+                onChange={handleChange}
+                className=' peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500'
+                />
+            </div>
+        </div>
+        <div className='mb-4'>
+            <label htmlFor="location" className='mb-2 block text-sm font-medium'>City</label>
             <div className='mt-2 rounded-md'>
                 <input
                 type="text"
                 id="location"
                 name="location"
                 required
-                placeholder='Enter Location'
+                placeholder='Enter City'
                 value={formData.location}
                 onChange={handleChange}
                 className=' peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500'
@@ -230,7 +258,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     className=' peer  rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500'
                 /> <label htmlFor="pets" className='mb-2  text-sm font-medium'>Pets Allow</label>
             </div>
-             <div className='mb-4'>
+            <div className='mb-4'>
                 <input
                     type="checkbox"
                     id="isTopOffer"
@@ -240,6 +268,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                     className=' peer  rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500'
                 /> <label htmlFor="isTopOffer" className='mb-2  text-sm font-medium'>Is Top Offer</label>
             </div>
+            <div className='mb-4'>
+                <select name="roomType" id="roomType" onChange={handleChange} value={formData.roomType} className='peer rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500'>
+                    <option value={formData.roomType}>{formData.roomType}</option>
+                    <option value="studio">Studio</option>
+                    <option value="single">Single Bedroom</option>
+                    <option value="double">Double Bedrooms</option>
+                    <option value="family">Family</option>
+                </select>
+            </div>
         </div>
         <button
             type="submit"
@@ -248,6 +285,27 @@ const handleSubmit = async (e: React.FormEvent) => {
         >
             Update Room
         </button>
+        <div
+            className="flex items-end space-x-1 mt-4"
+            aria-live="polite"
+            aria-atomic="true"
+            >
+            {errorMessage && (
+                <>
+                    <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                    <p className="text-sm text-red-500">{errorMessage}</p>
+                </>
+            )}
+            {successMessage && (
+                <>
+                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    <p className="text-sm text-green-500">{successMessage}</p>
+                    <Button >
+                        <Link href='/dashboard/rooms'>View Rooms</Link>
+                    </Button>
+                </>
+            )}
+        </div>
     </form>
   )
 }
