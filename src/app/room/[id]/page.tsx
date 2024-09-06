@@ -74,7 +74,7 @@ const Page = ({params}: {params: {id: string}}) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent">
                             <div className="absolute bottom-5 left-10 text-white">
                                 <h1 className="text-4xl font-bold">{room.title}</h1>
-                                <p className="text-xl">{room.address}{room.location}</p>
+                                <p className="text-xl">{room.address}, {room.location}</p>
                             </div>
                         </div>
                     </div>
