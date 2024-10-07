@@ -1,12 +1,10 @@
-import Pagination from '@/app/ui/dashboard/pagination';
-import Search from '@/app/ui/dashboard/search';
-import Table from '@/app/ui/dashboard/table';
-import { CreateRoom } from '@/app/ui/dashboard/button';
-import { lusitana } from '@/app/ui/font';
-//import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-import { Suspense } from 'react';
+import { CreateRoom } from '@/components/dashboard/button';
+import Pagination from '@/components/dashboard/pagination';
+import Search from '@/components/dashboard/search';
+import Table from '@/components/dashboard/table';
+import { lusitana } from '@/components/ui/font';
 import { Metadata } from 'next';
-import { fetchRoomPage } from '../../service/action';
+import { fetchRoomPage } from '@/app/service/action';
 export const metadata : Metadata = {
   title : 'Rooms - Dashboard',
 }

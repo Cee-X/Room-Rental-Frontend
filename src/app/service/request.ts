@@ -1,11 +1,8 @@
 import axios from 'axios';
-
+import { getCookie } from 'cookies-next';
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 const getToken = () => {
-    if (typeof window !== 'undefined') {
-        return localStorage.getItem('token') || '';
-    }
-    return '';
+   return getCookie('token') || '';
 }
 
 const apiService = axios.create({
@@ -14,6 +11,7 @@ const apiService = axios.create({
 
 apiService.interceptors.request.use(config => {
     const token = getToken();
+
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }

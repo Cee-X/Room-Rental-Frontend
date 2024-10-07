@@ -1,9 +1,9 @@
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
-import { inter } from "./ui/font"
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { inter } from "@/components/ui/font";
+import NavBar from "@/components/ui/navbar";
 import "./globals.css";
-import NavBar from "./ui/navbar";
-import { AuthProvider } from "./auth/AuthProvider";
-
 
 export const metadata: Metadata = {
   title: "Roomify",
@@ -21,8 +21,8 @@ export default function RootLayout({
         <AuthProvider>
             <NavBar/>
             {children}
+            <Toaster />
         </AuthProvider>
-        
       </body>
     </html>
   );

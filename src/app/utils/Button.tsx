@@ -19,8 +19,6 @@ export function Button({ children, className, ...rest }: ButtonProps) {
   );
 }
 
-
-
 export function UpdateUser() {
   return (
     <Link

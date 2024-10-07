@@ -1,129 +1,183 @@
-'use client'
-import React, {use, useState} from 'react';
-import { Button } from '../utils/Button';
+"use client";
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Phone, Mail, MapPin, Clock, Facebook, Twitter, Instagram } from 'lucide-react'
+import { useToast } from '@/components/hooks/use-toast';
 import { sendEmail } from '../service/action';
-const Contact = () => {
-  const [formData, setFormData] = useState({
+export default function ContactPage() {
+  const { toast } = useToast()
+  const [Data, setData] = useState({
     name: '',
     email: '',
     subject: '',
     message: '',
-  });
-  const [status, setStatus]  = useState('');
+  })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name, value} = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append('name', formData.name);
-    data.append('email', formData.email);
-    data.append('subject', formData.subject);
-    data.append('message', formData.message);
-
-    try{
-      const response = await sendEmail(data);
-      setStatus(response.message);
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('name', Data.name)
+    formData.append('email', Data.email)
+    formData.append('subject', Data.subject)
+    formData.append('message', Data.message)
+    try {
+      await sendEmail( formData )
+      toast({
+        title: "Message Sent",
+        description: "Your message has been sent successfully.",
+        variant: "default",
+      })
     }catch(error){
-      console.error(error);
-      setStatus('An error occurred while sending your message');
+      console.error(error)
+      toast({
+        title: "Message Failed",
+        description: "Your message failed to send.",
+        variant: "destructive",
+      })
     }
+    setData({ name: '', email: '', subject: '', message: ''})
   }
 
-  return (
-    <div className="container mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold text-center md:text-start mb-8">Contact Us</h1>
-     
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Contact Information */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Our Information</h2>
-          <p className="mb-2"><strong>Address:</strong> 123 Main Street, Pathum Thani, Thailand</p>
-          <p className="mb-2"><strong>Phone:</strong> +66 61 273 6866</p>
-          <p className="mb-2"><strong>Email:</strong> contact@roomrental.com</p>
-          <p className="mb-2"><strong>Operating Hours:</strong> Mon-Fri, 9am - 6pm</p>
-          
-          <h2 className="text-xl font-semibold mt-8 mb-4">Follow Us</h2>
-          <div className="flex space-x-4">
-            <a href="#" className="text-blue-500 hover:underline">Facebook</a>
-            <a href="#" className="text-blue-400 hover:underline">Twitter</a>
-            <a href="#" className="text-pink-500 hover:underline">Instagram</a>
-          </div>
-        </div>
-        
-        {/* Contact Form */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Send Us a Message</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                required
-                onChange={handleChange}
-                placeholder="Your Name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="Your Email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                required
-                onChange={handleChange}
-                placeholder="Subject"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange} 
-                required
-                placeholder="Your Message"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                rows={5}
-              />
-            </div>
-            <Button className="bg-blue-500 text-white px-6 py-2 rounded-md">
-              Submit
-            </Button>
-          </form>
-        </div>
-      </div>
+  const faqItems = [
+    { question: "What are your check-in and check-out times?", answer: "Check-in is at 2 PM and check-out is at 12 AM." },
+    { question: "Do you offer early check-in?", answer: "Yes, we offer early check-in for an additional fee. Please contact us for more information." },
+    { question: "Do you offer airport transfers?", answer: "No, we don't offer airport transfers." },
+    { question: "Is breakfast included in the room rate?", answer: "Breakfast is included in most of our room rates. Please check the specific room details for confirmation." },
+  ]
 
-      {/* Google Map */}
-      <div className="mt-12">
-        <h2 className="text-xl font-semibold mb-4">Find Us Here</h2>
-        <iframe
-          className="w-full h-64 border border-gray-300 rounded-md"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.587998932401!2d100.51378611523456!3d13.736717690352697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29f151fcf7f75%3A0x21e4b67e34e0891!2sGrand%20Palace!5e0!3m2!1sen!2sth!4v1647634334727!5m2!1sen!2sth"
-          allowFullScreen
-          loading="lazy"
-        ></iframe>
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Contact Us</h1>
+      
+      <div className="grid md:grid-cols-2 gap-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Send us a message</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Name</Label>
+                <Input 
+                  id="name" 
+                  name="name" 
+                  value={Data.name} 
+                  onChange={handleInputChange} 
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input 
+                  id="email" 
+                  name="email" 
+                  type="email" 
+                  value={Data.email} 
+                  onChange={handleInputChange} 
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="subject">Subject</Label>
+                <Input 
+                  id="subject" 
+                  name="subject" 
+                  value={Data.subject} 
+                  onChange={handleInputChange} 
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="message">Message</Label>
+                <Textarea 
+                  id="message" 
+                  name="message" 
+                  value={Data.message} 
+                  onChange={handleInputChange} 
+                  required 
+                />
+              </div>
+              <Button type="submit">Send Message</Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center">
+                <Phone className="mr-2" />
+                <span>+1 (555) 123-4567</span>
+              </div>
+              <div className="flex items-center">
+                <Mail className="mr-2" />
+                <span>contact@roomrental.com</span>
+              </div>
+              <div className="flex items-center">
+                <MapPin className="mr-2" />
+                <span>Rangsit, Pathumthani, Thailand</span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="mr-2" />
+                <span>Mon-Fri: 9AM-5PM, Sat-Sun: 10AM-3PM</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <a href="#" aria-label="Facebook"><Facebook/></a>
+                <a href="#" aria-label="Twitter"><Twitter /></a>
+                <a href="#" aria-label="Instagram"><Instagram /></a>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Location</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="aspect-video relative">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.8011963457584!2d100.61729731482933!3d13.964601990198706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e28323d10290b5%3A0x946e22bc8754445a!2sRangsit%20University!5e0!3m2!1sen!2sth!4v1650123456789!5m2!1sen!2sth"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Frequently Asked Questions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible>
+                {faqItems.map((item, index) => (
+                  <AccordionItem value={`item-${index}`} key={index}>
+                    <AccordionTrigger>{item.question}</AccordionTrigger>
+                    <AccordionContent>{item.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
-  );
-};
-
-export default Contact;
+  )
+}
